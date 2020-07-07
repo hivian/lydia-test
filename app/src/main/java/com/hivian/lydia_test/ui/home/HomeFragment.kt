@@ -17,6 +17,7 @@ import com.hivian.lydia_test.data.model.domain.RandomUserDomain
 import com.hivian.lydia_test.databinding.FragmentHomeBinding
 import com.hivian.lydia_test.ui.NetworkState
 import com.hivian.lydia_test.ui.home.list.RandomUsersListAdapter
+import com.hivian.lydia_test.ui.visible
 
 class HomeFragment : Fragment() {
 
@@ -46,7 +47,7 @@ class HomeFragment : Fragment() {
         observe(homeViewModel.networkState, ::handleNetworkState)
         observe(homeViewModel.clickEvent, ::handleEvent)
 
-        with(binding.newsList) {
+        with(binding.randomUsersList) {
             adapter = viewAdapter
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         }
@@ -58,8 +59,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun handleNetworkState(networkState: NetworkState) {
-        if (networkState is NetworkState.Error)
-            Toast.makeText(context, networkState.message, Toast.LENGTH_SHORT).show()
+        when (networkState) {
+            is NetworkState.Loading -> binding.loadingBar.visible = true
+            is NetworkState.Error -> {
+                binding.loadingBar.visible = false
+                Toast.makeText(context, networkState.message, Toast.LENGTH_SHORT).show()
+            }
+            is NetworkState.Success -> binding.loadingBar.visible = false
+        }
     }
 
     private fun handleEvent(homeListViewEvent: HomeListViewEvent) {
