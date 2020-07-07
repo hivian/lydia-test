@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.hivian.lydia_test.data.model.RandomUser
+import com.hivian.lydia_test.data.model.dto.RandomUserDTO
 
 
-@Database(entities = [RandomUser::class], version = RandomUsersDatabase.DB_VERSION, exportSchema = false)
+@Database(entities = [RandomUserDTO::class], version = RandomUsersDatabase.DB_VERSION, exportSchema = false)
 @TypeConverters(StringListConverter::class, NameConverter::class, LocationConverter::class, PictureConverter::class)
 abstract class RandomUsersDatabase : RoomDatabase() {
 

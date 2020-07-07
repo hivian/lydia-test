@@ -25,6 +25,19 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
 }
 
 dependencies {
@@ -64,6 +77,8 @@ dependencies {
     // LOGGING
     implementation 'com.github.ajalt:timberkt:1.5.1'
 
-    // GLIDE
+    // UI
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+
 }

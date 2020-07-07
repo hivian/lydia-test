@@ -6,13 +6,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RetrofitApiClient() {
+class RetrofitApiClient {
 
     private val okHttpClient by lazy { OkHttpClient() }
 
     private val retrofit: Retrofit by lazy {
         val builder = Retrofit.Builder()
-                .baseUrl("https://randomuser.me/api/1.0/?seed=lydia&results=10&page=1/")
+                .baseUrl("https://randomuser.me/")
                 .addConverterFactory(GsonConverterFactory.create())
 
         val loggingInterceptor = HttpLoggingInterceptor().apply {

@@ -1,4 +1,4 @@
-package com.hivian.lydia_test.data.model
+package com.hivian.lydia_test.data.model.dto
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -8,15 +8,15 @@ import com.google.gson.annotations.SerializedName
 data class Results(
 
     @SerializedName("results")
-    val quotes: List<RandomUser>
+    val results: List<RandomUserDTO>
 )
 
 @Entity(tableName = "random_user_entity")
-data class RandomUser(
+data class RandomUserDTO(
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int,
+    var localId: Int,
 
     @ColumnInfo(name = "gender")
     @SerializedName("gender")
@@ -40,7 +40,7 @@ data class RandomUser(
 
     @ColumnInfo(name = "cell")
     @SerializedName("cell")
-    val cell: Int,
+    val cell: String,
 
     @ColumnInfo(name = "picture")
     @SerializedName("picture")

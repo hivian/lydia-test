@@ -1,4 +1,4 @@
-package com.hivian.lydia_test.data.model
+package com.hivian.lydia_test.data.model.dto
 
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName

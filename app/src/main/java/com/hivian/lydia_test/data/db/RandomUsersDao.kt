@@ -2,27 +2,48 @@ package com.hivian.lydia_test.data.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.hivian.lydia_test.data.model.RandomUser
+import com.hivian.lydia_test.data.model.dto.Name
+import com.hivian.lydia_test.data.model.dto.RandomUserDTO
 
 @Dao
 interface RandomUsersDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg quoteEntity: RandomUser)
+    suspend fun insert(vararg randomUserEntity: RandomUserDTO)
 
     @Update
-    suspend fun update(vararg quoteEntity: RandomUser)
+    suspend fun update(vararg randomUserEntity: RandomUserDTO)
 
     @Delete
-    suspend fun delete(vararg quoteEntity: RandomUser)
+    suspend fun delete(vararg randomUserEntity: RandomUserDTO)
 
     @Query("DELETE FROM random_user_entity")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM random_user_entity")
-    fun getAllRandomUsers() : LiveData<List<RandomUser>>
+    fun getAllRandomUsers() : LiveData<List<RandomUserDTO>>
 
     @Query("SELECT * FROM random_user_entity WHERE id = :id")
-    suspend fun getRandomUserById(id : Int) : RandomUser
+    suspend fun getRandomUserById(id : Int) : RandomUserDTO
+
+    @Query("SELECT * FROM random_user_entity WHERE name = :name LIMIT 1")
+    suspend fun getRandomUserByServerId(name: Name): RandomUserDTO?
+
+    @Transaction
+    suspend fun upsert(randomUserDTO: RandomUserDTO) {
+        val isRandomUser = getRandomUserByServerId(randomUserDTO.name)
+        isRandomUser?.let {
+            update(randomUserDTO.apply {
+                localId = isRandomUser.localId
+            })
+        } ?: run {
+            insert(randomUserDTO)
+        }
+    }
+
+    @Transaction
+    suspend fun upsert(randomUsersList: List<RandomUserDTO>) {
+        randomUsersList.forEach { upsert(it) }
+    }
 
 }
